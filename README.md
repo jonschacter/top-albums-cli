@@ -30,7 +30,7 @@ Enter 'list' to view the full list, 'exit' to quit the program, or 'help' for a 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://https://github.com/jonschacter/top-albums-cli
+Bug reports and pull requests are welcome on GitHub at https://github.com/jonschacter/top-albums-cli
 
 ## License
 
