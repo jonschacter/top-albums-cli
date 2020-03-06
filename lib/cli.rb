@@ -106,7 +106,7 @@ class TopAlbums::CLI
 
     def more_info
         input = nil
-        while input != "menu" || input != "exit"
+        while input != "menu"
             puts "Please enter the rank# or exact name of the album you would like more info on or type 'menu' to return to main menu"
             input = gets.strip
 
@@ -115,7 +115,7 @@ class TopAlbums::CLI
                 display_info(album)
             elsif album = TopAlbums::Album.find_by_name(input.split.map{|i|i.capitalize}.join(" "))
                 display_info(album)
-            elsif input != "menu" || input != "exit"
+            elsif input != "menu"
                 input_error
             end
         end
@@ -167,7 +167,7 @@ class TopAlbums::CLI
     def filter_artist
         input = nil
 
-        while input != "Menu" || input != "Exit"
+        while input != "Menu"
             puts "Please enter the exact name of the artist or type 'menu' to return to main menu."
             input = gets.strip.split.map{|i|i.capitalize}.join(" ")
 
@@ -179,7 +179,7 @@ class TopAlbums::CLI
                     end
                 end
                 thin_divider
-            elsif input != "Menu" || input != "Exit"
+            elsif input != "Menu"
                 input_error
             end
         end
@@ -189,7 +189,7 @@ class TopAlbums::CLI
     def filter_producer
         input = nil
 
-        while input != "Menu" || input != "Exit"
+        while input != "Menu"
             puts "Please enter the exact name of the producer or type 'menu' to return to main menu."
             input = gets.strip.split.map{|i|i.capitalize}.join(" ")
 
@@ -201,7 +201,7 @@ class TopAlbums::CLI
                     end
                 end
                 thin_divider
-            elsif input != "Menu" || input != "Exit"
+            elsif input != "Menu"
                 input_error
             end
         end
@@ -211,7 +211,7 @@ class TopAlbums::CLI
     def filter_year
         input = nil
 
-        while input != "menu" || input != "exit"
+        while input != "menu"
             puts "Please enter the year or type 'menu' to return to main menu."
             input = "#{gets.strip}"
 
@@ -225,7 +225,7 @@ class TopAlbums::CLI
                 thin_divider
             elsif input.to_i.to_s == input && input.to_i.between?(0, Time.now.year)
                 puts "#{input} does not appear on this list"
-            elsif input != "menu" || input != "exit"
+            elsif input != "menu"
                 input_error
             end
         end

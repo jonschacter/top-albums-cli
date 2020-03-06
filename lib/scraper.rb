@@ -20,8 +20,8 @@ class TopAlbums::Scraper
                 artist = property_array.find{ |p| p[:displayName] == "Artist" }[:propertyValue]
                 year = property_array.find{ |p| p[:displayName] == "Release Date" }[:propertyValue]
                 producer = property_array.find{ |p| p[:displayName] == "Producer" }[:propertyValue]
-                bio = album_hash[:node][:nodeWiki][:wikiText]
                 wiki = album_hash[:node][:nodeWiki][:wikiLink]
+                bio = album_hash[:node][:nodeWiki][:wikiText]
 
                 #create album and assign properties
                 a = TopAlbums::Album.create(name)
@@ -29,8 +29,8 @@ class TopAlbums::Scraper
                 a.artist = artist
                 a.year = year
                 a.producer = producer
-                a.bio = bio
                 a.wiki = wiki
+                a.bio = bio
             end
         end
     end
