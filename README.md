@@ -1,39 +1,36 @@
 # TopAlbums
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/top_albums`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This CLI program will scrape 'The Greatest Albums of All Time' as voted by 'Ranker.com' users and allow you to sort, filter, and view this data in a variety of ways.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Clone this Git repository
 
-```ruby
-gem 'top_albums'
-```
+Then execute:
 
-And then execute:
+    $ bundle
 
-    $ bundle install
+Now run the program:
 
-Or install it yourself as:
+    $ bin/top-albums
 
-    $ gem install top_albums
+Note: it may be required to allow executable permission by entering:
+
+    $ chmod +x bin/top-albums
 
 ## Usage
 
-TODO: Write usage instructions here
+Run program:
 
-## Development
+    $ bin/top-albums
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Allow time for the program to load the necessary data.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Enter 'list' to view the full list, 'exit' to quit the program, or 'help' for a full list of commands.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/<github username>/top_albums.
-
+Bug reports and pull requests are welcome on GitHub at https://https://github.com/jonschacter/top-albums-cli
 
 ## License
 

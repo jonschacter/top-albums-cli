@@ -2,14 +2,13 @@ class TopAlbums::Album
     extend Findable::ClassMethods
     extend Memorable::ClassMethods
     
-    attr_accessor :name, :year, :rank, :bio, :wiki, :listen_status
+    attr_accessor :name, :year, :rank, :bio, :wiki
     attr_reader :artist, :producer
 
     @@all = []
 
     def initialize(name)
         @name = name
-        @listen_status = "N"
     end
 
     def save

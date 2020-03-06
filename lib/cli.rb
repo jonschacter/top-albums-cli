@@ -17,8 +17,6 @@ class TopAlbums::CLI
                 list_albums
             when "list-year"
                 list_year
-            when "listened"
-                mark_listened
             when "artist-count"
                 artist_count
             when "producer-count"
@@ -33,8 +31,6 @@ class TopAlbums::CLI
                 filter_producer
             when "filter-year"
                 filter_year
-            when "filter-status"
-                filter_status
             when "range"
                 display_range
             end
@@ -66,7 +62,6 @@ class TopAlbums::CLI
         thin_divider
         puts "'list'            - view full list"
         puts "'list-year'       - sort full list by year"
-        puts "'listened'        - mark an album as listened to"
         puts "'artist-count'    - show number of list entries from each artist"
         puts "'producer-count'  - show number of list entries from each producer"
         puts "'year-count'      - show number of list entries from each year"
@@ -74,7 +69,6 @@ class TopAlbums::CLI
         puts "'filter-artist'   - show all list entries by specific artist"
         puts "'filter-producer' - show all list entries by specific producer"
         puts "'filter-year'     - show all list entries by specific year"
-        puts "'filter-status'   - show all list entries by listened status"
         puts "'range'           - display only a range of the list"
         puts "'exit'            - quit"
         thin_divider
@@ -85,12 +79,12 @@ class TopAlbums::CLI
     end
 
     def display_list_line(album)
-        puts "#{album.rank}. #{album.name} - #{album.artist.name} (#{album.year.name}) #{album.listen_status}"
+        puts "#{album.rank}. #{album.name} - #{album.artist.name} (#{album.year.name})"
     end
 
     def list_albums
         thin_divider
-        puts "# Title - Artist (Year) Listened?(Y/N)"
+        puts "# Title - Artist (Year)"
         thin_divider
         TopAlbums::Album.sort_by_rank.each do |album|
             display_list_line(album)
@@ -100,7 +94,7 @@ class TopAlbums::CLI
 
     def list_year
         thin_divider
-        puts "# Title - Artist (Year) Listened?(Y/N)"
+        puts "# Title - Artist (Year)"
         thin_divider
         TopAlbums::Album.sort_by_year.each do |album|
             if album.year.name != ""
@@ -110,29 +104,9 @@ class TopAlbums::CLI
         thick_divider
     end
 
-    def mark_listened
-        input = nil
-        while input != "menu"
-            puts "Please enter the rank# or exact name of the album you would like to mark as listened or type 'menu' to return to main menu"
-            input = gets.strip
-
-            if input.to_i.to_s == input && input.to_i.between?(1, TopAlbums::Album.all.length)
-                album = TopAlbums::Album.find_by_rank(input.to_i)
-                album.listen_status = "Y"
-                puts "Marked '#{album.name}' as listened."
-            elsif album = TopAlbums::Album.find_by_name(input.split.map{|i|i.capitalize}.join(" "))
-                album.listen_status = "Y"
-                puts "Marked '#{album.name}' as listened."
-            elsif input != "menu"
-                input_error
-            end
-        end
-        thick_divider
-    end
-
     def more_info
         input = nil
-        while input != "menu"
+        while input != "menu" || input != "exit"
             puts "Please enter the rank# or exact name of the album you would like more info on or type 'menu' to return to main menu"
             input = gets.strip
 
@@ -141,7 +115,7 @@ class TopAlbums::CLI
                 display_info(album)
             elsif album = TopAlbums::Album.find_by_name(input.split.map{|i|i.capitalize}.join(" "))
                 display_info(album)
-            elsif input != "menu"
+            elsif input != "menu" || input != "exit"
                 input_error
             end
         end
@@ -155,7 +129,6 @@ class TopAlbums::CLI
         puts "Year:             #{album_obj.year.name}" if album_obj.year
         puts "Producer:         #{album_obj.producer.name}" if album_obj.producer
         puts "Current Rank:     #{album_obj.rank}"
-        puts "Listened?(Y/N):   #{album_obj.listen_status}"
         puts "Wiki URL:         #{album_obj.wiki}" if album_obj.wiki
         puts "Bio:              #{album_obj.bio}" if album_obj.bio
         thin_divider
@@ -194,7 +167,7 @@ class TopAlbums::CLI
     def filter_artist
         input = nil
 
-        while input != "Menu"
+        while input != "Menu" || input != "Exit"
             puts "Please enter the exact name of the artist or type 'menu' to return to main menu."
             input = gets.strip.split.map{|i|i.capitalize}.join(" ")
 
@@ -206,7 +179,7 @@ class TopAlbums::CLI
                     end
                 end
                 thin_divider
-            elsif input != "Menu"
+            elsif input != "Menu" || input != "Exit"
                 input_error
             end
         end
@@ -216,7 +189,7 @@ class TopAlbums::CLI
     def filter_producer
         input = nil
 
-        while input != "Menu"
+        while input != "Menu" || input != "Exit"
             puts "Please enter the exact name of the producer or type 'menu' to return to main menu."
             input = gets.strip.split.map{|i|i.capitalize}.join(" ")
 
@@ -228,7 +201,7 @@ class TopAlbums::CLI
                     end
                 end
                 thin_divider
-            elsif input != "Menu"
+            elsif input != "Menu" || input != "Exit"
                 input_error
             end
         end
@@ -238,7 +211,7 @@ class TopAlbums::CLI
     def filter_year
         input = nil
 
-        while input != "menu"
+        while input != "menu" || input != "exit"
             puts "Please enter the year or type 'menu' to return to main menu."
             input = "#{gets.strip}"
 
@@ -250,39 +223,9 @@ class TopAlbums::CLI
                     end
                 end
                 thin_divider
-            elsif input.to_i.to_s == input && input.to_i.between?(0, 2020)
+            elsif input.to_i.to_s == input && input.to_i.between?(0, Time.now.year)
                 puts "#{input} does not appear on this list"
-            elsif input != "menu"
-                input_error
-            end
-        end
-        thick_divider
-    end
-
-    def filter_status
-        input = nil
-
-        while input != "menu"
-            puts "Please enter 'Y' or 'N' or type 'menu' to return to main menu"
-            input = gets.strip
-
-            if input.capitalize == "Y"
-                thin_divider
-                TopAlbums::Album.sort_by_rank.each do |album|
-                    if album.listen_status == "Y"
-                        display_list_line(album)
-                    end
-                end
-                thin_divider
-            elsif input.capitalize == "N"
-                thin_divider
-                TopAlbums::Album.sort_by_rank.each do |album|
-                    if album.listen_status == "N"
-                        display_list_line(album)
-                    end
-                end
-                thin_divider
-            elsif input != "menu"
+            elsif input != "menu" || input != "exit"
                 input_error
             end
         end
